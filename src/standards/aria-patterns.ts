@@ -1,0 +1,1 @@
+export const ariaPatterns=['dialog','menu','tabs','accordion','combobox','listbox','grid','tooltip'].map(name=>({id:`aria-${name}`,name,detectability:'manual' as const,question:`Can developers verify native semantics first, then correct ARIA roles, names, states, keyboard interaction, and focus management for this ${name}?`}));

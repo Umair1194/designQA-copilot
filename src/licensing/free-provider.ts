@@ -1,0 +1,1 @@
+import type{LicenseProvider,LicenseStatus}from'./provider';export class FreeLicenseProvider implements LicenseProvider{async getStatus():Promise<LicenseStatus>{return{tier:'free',active:true,message:'Local core features'}}async activate(){return this.getStatus()}async deactivate(){}}

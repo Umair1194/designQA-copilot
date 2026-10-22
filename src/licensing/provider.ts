@@ -1,0 +1,1 @@
+export interface LicenseStatus{tier:'free'|'pro'|'team';active:boolean;message:string}export interface LicenseProvider{getStatus():Promise<LicenseStatus>;activate(key:string):Promise<LicenseStatus>;deactivate():Promise<void>}

@@ -1,0 +1,17 @@
+{
+  "name": "Design QA Copilot",
+  "id": "REPLACE_WITH_FIGMA_PLUGIN_ID",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": [
+    "figma"
+  ],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": [
+      "http://localhost:4318"
+    ],
+    "reasoning": "Connect to the local browser review service for user-requested website audits. Figma design scans run locally."
+  }
+}

@@ -1,0 +1,19 @@
+export type Detectability = 'automatic' | 'assisted' | 'manual' | 'not-applicable';
+export type AutomationLevel = Exclude<Detectability, 'not-applicable'>;
+export type Severity = 'blocker' | 'critical' | 'major' | 'minor' | 'info';
+export type Confidence = 'high' | 'medium' | 'low';
+export type PlatformProfile = 'responsive-web'|'desktop-web'|'mobile-web'|'ios'|'android'|'tablet'|'desktop-app'|'saas'|'ecommerce'|'marketing'|'kiosk'|'wearable'|'custom';
+export type AuditCategory = 'accessibility'|'color'|'typography'|'spacing'|'layout'|'responsive'|'components'|'design-system'|'interaction'|'forms'|'content'|'localization'|'data-visualization'|'privacy'|'file-hygiene'|'prototyping'|'handoff'|'performance';
+export interface Rect { x:number; y:number; width:number; height:number }
+export interface NormalizedPaint { type:string; visible:boolean; opacity:number; color?:{r:number;g:number;b:number} }
+export interface NormalizedText { characters:string; fontSize?:number; fontWeight?:number; lineHeight?:number; textStyleId?:string; textAlign?:string }
+export interface NormalizedLayout { mode?:string; itemSpacing?:number; padding?:{top:number;right:number;bottom:number;left:number}; sizingHorizontal?:string; sizingVertical?:string; clipsContent?:boolean }
+export interface NormalizedNode { id:string; name:string; type:string; pageId:string; parentId?:string; visible:boolean; locked:boolean; bounds?:Rect; opacity:number; fills:NormalizedPaint[]; strokes:NormalizedPaint[]; text?:NormalizedText; layout?:NormalizedLayout; childrenIds:string[]; componentId?:string; mainComponentId?:string; styleIds:string[]; reactionsCount:number }
+export interface StandardReference { standard:string; criterion?:string; level?:string; url?:string }
+export interface IssueEvidence { property:string; observed:string|number|boolean; expected?:string }
+export interface AuditIssue { id:string; fingerprint:string; ruleId:string; title:string; description:string; severity:Severity; confidence:Confidence; automationLevel:AutomationLevel; status:'open'|'resolved'|'ignored'|'accepted-risk'|'false-positive'; nodeIds:string[]; primaryNodeId?:string; pageId?:string; evidence:IssueEvidence[]; standardReferences:StandardReference[]; remediation:string[]; developerNotes?:string[]; manualReviewQuestions?:string[]; fixAvailability:'safe'|'review-required'|'none'; createdAt:number }
+export interface RuleContext { nodes:NormalizedNode[]; profile:PlatformProfile; signal?:{cancelled:boolean} }
+export interface AuditRule { id:string; version:number; title:string; shortTitle:string; description:string; category:AuditCategory; sourceType:'wcag'|'nng'|'aria'|'design-system'|'platform'|'ux-principle'|'design-qa'|'internal'; standardReferences:StandardReference[]; automationLevel:AutomationLevel; defaultSeverity:Severity; applicableNodeTypes:string[]; applicableProfiles:string[]; confidence:Confidence; rationale:string; impact:string; detectionLimits:string[]; falsePositiveConditions:string[]; remediation:string[]; evaluate(context:RuleContext):Promise<AuditIssue[]>; fix?:{safety:'safe'|'review-required'|'unsupported'} }
+export interface StandardCriterion { id:string; standard:'WCAG'; version:'2.0'|'2.1'|'2.2'; criterionNumber:string; title:string; level:'A'|'AA'|'AAA'; principle:'perceivable'|'operable'|'understandable'|'robust'; detectability:Detectability; applicablePlatforms:PlatformProfile[]; summary:string; designerReviewQuestion:string; relatedRuleIds:string[]; limitations:string[] }
+export type ScanScope = 'selection'|'top-level-frames'|'page'|'file'|'component-library'|'prototype-flow';
+export interface AuditSummary { source?:'figma'|'website'; sourceUrl?:string; annotationUrl?:string; reviewMethods?:import('../engine/review-plan').ReviewMethod[];  issues:AuditIssue[]; scannedNodes:number; durationMs:number; cancelled:boolean; coverage:{automatic:number;assisted:number;manual:number}; scores:Record<string,number> }

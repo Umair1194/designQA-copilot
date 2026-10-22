@@ -1,0 +1,1 @@
+import type{LicenseProvider,LicenseStatus}from'./provider';export class MockProLicenseProvider implements LicenseProvider{private active=false;async getStatus():Promise<LicenseStatus>{return{tier:'pro',active:this.active,message:'Development-only mock'}}async activate(key:string){this.active=key==='MOCK-PRO';return this.getStatus()}async deactivate(){this.active=false}}

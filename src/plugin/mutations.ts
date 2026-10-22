@@ -1,0 +1,3 @@
+import type { AuditIssue } from '../shared/types';
+export const previewFix=(issue:AuditIssue)=>issue.ruleId==='file-hygiene/default-layer-name'?'Rename the layer to a generated descriptive name. The current value remains unchanged until approved.':'No automatic fix is available.';
+export async function applyFix(issue:AuditIssue){if(issue.ruleId!=='file-hygiene/default-layer-name'||!issue.primaryNodeId)throw new Error('Unsupported fix');const node=await figma.getNodeByIdAsync(issue.primaryNodeId);if(!node||node.type==='DOCUMENT'||node.type==='PAGE')throw new Error('Layer not found');node.name=`${node.type.toLowerCase().replace('_',' ')} — reviewed`;}
